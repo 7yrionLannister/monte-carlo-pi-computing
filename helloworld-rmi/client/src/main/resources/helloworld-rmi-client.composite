@@ -37,11 +37,8 @@
       <interface.java interface="java.lang.Runnable" />
     </service>
 
-    <reference name="multiplicarMat">
-      <frascati:binding.rmi host="10.147.19.223" serviceName="rmiservice" port="1099"/>
-    </reference>
-
-    <implementation.java class="org.ow2.frascati.examples.multiplymat.annotated.ClientImpl" />
+    
+    <implementation.java class="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.Monolitico" />
 
   </component>
 
