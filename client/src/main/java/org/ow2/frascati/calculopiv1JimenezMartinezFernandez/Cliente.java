@@ -7,10 +7,18 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import org.osoa.sca.annotations.Init;
 import org.osoa.sca.annotations.Reference;
+import org.osoa.sca.annotations.Scope;
+import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioCalcularPI;
+import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioComBroker;
 
-public class Cliente implements Runnable {
+
+@Scope("COMPOSITE")
+public class Cliente implements Runnable, ServicioCalcularPI {
+
+	@Reference
+	private ServicioComBroker servicioComBroker;
+
 	private InterfazGrafica interfazGrafica;
 
 	public long puntitosEstan(long numeros, int semilla) {
@@ -31,8 +39,8 @@ public class Cliente implements Runnable {
 		return nPuntosDentroDelCirculo;
 	}
 
-	public double calcularPi(long puntosACalcular, int semilla) {
-
+	@Override
+	public double recibirPuntos(long puntosACalcular, int semilla) {
 		long p = puntitosEstan(puntosACalcular, semilla);
 
 		double pi = (4 * ((double) p) / (puntosACalcular));
@@ -43,7 +51,7 @@ public class Cliente implements Runnable {
 	// --------------------------------------------------------------------------
 	// Implementation of the Runnable interface
 	// --------------------------------------------------------------------------
-
+	@Override
 	public final void run() {
 		// configurar la interfaz grafica
 		try {
@@ -56,23 +64,16 @@ public class Cliente implements Runnable {
 		}
 
 		configurarEventos();
-		Scanner n = new Scanner(System.in);
-		System.out.println("Por favor digite los puntos");
-		long entrada = n.nextLong();
-		System.out.println("Por favor digite la semilla que desea");
-		int entradaSemilla = n.nextInt();
-		System.out.println("Espere por favor");
-		System.out.println(calcularPi(entrada, entradaSemilla));
 	}
 
 	private void configurarEventos() {
 		interfazGrafica.getBtncalcularPI().addActionListener(
 			new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String seed = interfazGrafica.getTextFieldSemilla().getText().trim();
+					int seed = Integer.parseInt(interfazGrafica.getTextFieldSemilla().getText().trim());
 					int numNodos = Integer.parseInt(interfazGrafica.getTextFieldNumNodosProcesamiento().getText().trim());
-					int numPuntos = Integer.parseInt(interfazGrafica.getTextFieldNumPuntos().getText().trim());
-					if(!seed.isEmpty() && numNodos > 0 && numPuntos > 0) {
+					long numPuntos = Long.parseLong(interfazGrafica.getTextFieldNumPuntos().getText().trim());
+					if(seed > 0 && numNodos > 0 && numPuntos > 0) {
 						// TODO llamar al metodo que entrega los puntos y cuando los entregue mandar ese arreglo al metodo que calcula pi aqui (debe ser modificado para recibir los puntos)
 						// Y mostrar el resultado
 						System.out.println("----------------------------");
@@ -80,6 +81,8 @@ public class Cliente implements Runnable {
 						System.out.println("npuntos es " + numPuntos);
 						System.out.println("nnodos es " + numNodos);
 						System.out.println("----------------------------");
+
+						servicioComBroker.pedirPuntos(seed, numPuntos, numNodos);
 					}
 				}
 				
