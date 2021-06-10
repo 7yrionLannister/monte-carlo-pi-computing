@@ -37,7 +37,6 @@
       <interface.java interface="java.lang.Runnable" />
     </service>
 
-    
     <implementation.java class="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.Cliente" />
 
   </component>
