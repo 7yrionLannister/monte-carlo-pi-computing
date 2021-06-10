@@ -1,20 +1,13 @@
 package org.ow2.frascati.calculopiv1JimenezMartinezFernandez;
 
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.UUID;
 
 
@@ -31,7 +24,7 @@ public class InterfazGrafica extends JFrame {
 	public InterfazGrafica() {
 		setTitle("Calcular PI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 404, 435);
+		setBounds(100, 100, 370, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -42,7 +35,7 @@ public class InterfazGrafica extends JFrame {
 		contentPane.add(seedLabel);
 
 		semillaTextField = new JTextField();
-		semillaTextField.setBounds(280, 20, 249, 20);
+		semillaTextField.setBounds(280, 20, 62, 20);
 		contentPane.add(semillaTextField);
 		semillaTextField.setColumns(10);
 
@@ -51,7 +44,7 @@ public class InterfazGrafica extends JFrame {
 		contentPane.add(numPuntosLabel);
 
 		numPuntosTextField = new JTextField();
-		numPuntosTextField.setBounds(280, 47, 249, 20);
+		numPuntosTextField.setBounds(280, 50, 62, 20);
 		contentPane.add(numPuntosTextField);
 		numPuntosTextField.setColumns(10);
 
@@ -60,16 +53,16 @@ public class InterfazGrafica extends JFrame {
 		contentPane.add(numPuntosLabelX);
 
 		numNodosProcesamientoTextField = new JTextField();
-		numNodosProcesamientoTextField.setBounds(280, 80, 249, 20);
+		numNodosProcesamientoTextField.setBounds(280, 80, 62, 20);
 		contentPane.add(numNodosProcesamientoTextField);
 		numNodosProcesamientoTextField.setColumns(10);
 
 		calcularPIButton = new JButton("Enviar parametros");
-		calcularPIButton.setBounds(10, 110, 366, 23);
+		calcularPIButton.setBounds(10, 110, 160, 23);
 		contentPane.add(calcularPIButton);
 
 		elegirArchivoCSVButton = new JButton("Elegir archivo");
-		elegirArchivoCSVButton.setBounds(10, 210, 366, 23);
+		elegirArchivoCSVButton.setBounds(180, 110, 160, 23);
 		contentPane.add(elegirArchivoCSVButton);
 	}
 
@@ -89,7 +82,7 @@ public class InterfazGrafica extends JFrame {
 		return calcularPIButton;
 	}
 
-	public JButton getBtnBorrarReceta() {
+	public JButton getBtnElegirArchivo() {
 		return elegirArchivoCSVButton;
 	}
 }

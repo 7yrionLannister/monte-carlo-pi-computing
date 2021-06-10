@@ -1,6 +1,7 @@
 package org.ow2.frascati.calculopiv1JimenezMartinezFernandez;
 
-import java.util.Iterator;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -54,7 +55,7 @@ public class Cliente implements Runnable {
 			e.printStackTrace();
 		}
 
-
+		configurarEventos();
 		Scanner n = new Scanner(System.in);
 		System.out.println("Por favor digite los puntos");
 		long entrada = n.nextLong();
@@ -62,5 +63,27 @@ public class Cliente implements Runnable {
 		int entradaSemilla = n.nextInt();
 		System.out.println("Espere por favor");
 		System.out.println(calcularPi(entrada, entradaSemilla));
+	}
+
+	private void configurarEventos() {
+		interfazGrafica.getBtncalcularPI().addActionListener(
+			new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String seed = interfazGrafica.getTextFieldSemilla().getText().trim();
+					int numNodos = Integer.parseInt(interfazGrafica.getTextFieldNumNodosProcesamiento().getText().trim());
+					int numPuntos = Integer.parseInt(interfazGrafica.getTextFieldNumPuntos().getText().trim());
+					if(!seed.isEmpty() && numNodos > 0 && numPuntos > 0) {
+						// TODO llamar al metodo que entrega los puntos y cuando los entregue mandar ese arreglo al metodo que calcula pi aqui (debe ser modificado para recibir los puntos)
+						// Y mostrar el resultado
+						System.out.println("----------------------------");
+						System.out.println("seed es " + seed);
+						System.out.println("npuntos es " + numPuntos);
+						System.out.println("nnodos es " + numNodos);
+						System.out.println("----------------------------");
+					}
+				}
+				
+			}
+		);
 	}
 }
