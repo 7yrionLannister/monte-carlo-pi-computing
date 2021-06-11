@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+  xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+  targetNamespace="http://frascati.ow2.org/calcularpi"
+
+  name="ServerRMI">
+
+  <component name="server">
+
+    <service name="puntitosEstan" promote="server/puntitosEstan">
+      <interface.java interface="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioPuntitosEstan"></interface.java>
+      <frascati:binding.rmi host="localhost" serviceName="rmiService12" port="1090" />
+	  </service>
+
+    <reference name="servicioComBroker" promote="server/servicioComBroker">
+      <frascati:binding.rmi host="localhost"
+        serviceName="rmiService08" port="1098"/>
+    </reference>
+
+    <implementation.java class="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.Server" />
+
+  </component>
+
+</composite>

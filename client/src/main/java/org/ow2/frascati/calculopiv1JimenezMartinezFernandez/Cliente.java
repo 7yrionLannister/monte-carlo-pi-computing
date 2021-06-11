@@ -21,24 +21,6 @@ public class Cliente implements Runnable, ServicioCalcularPI {
 
 	private InterfazGrafica interfazGrafica;
 
-	public long puntitosEstan(long numeros, int semilla) {
-		Random r = new Random(semilla);
-
-		long nPuntosDentroDelCirculo = 0;
-
-		for (int i = 0; i < numeros; i++) {
-
-			double x = r.nextDouble();
-			double y = r.nextDouble();
-
-			if ((x * x) + (y * y) <= 1) {
-
-				nPuntosDentroDelCirculo++;
-			}
-		}
-		return nPuntosDentroDelCirculo;
-	}
-
 	@Override
 	public double recibirPuntos(long puntosACalcular, int semilla) {
 		long p = puntitosEstan(puntosACalcular, semilla);
