@@ -1,20 +1,15 @@
 package org.ow2.frascati.calculopiv1JimenezMartinezFernandez;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
-import java.util.Scanner;
-
-import javax.swing.JFrame;
 
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Scope;
-import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioPuntitosEstan;
+import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioGenerarPuntos;
 import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioComBroker;
 
 
 @Scope("COMPOSITE")
-public class Server implements ServicioPuntitosEstan {
+public class Server implements ServicioGenerarPuntos {
 
 	@Reference
 	private ServicioComBroker servicioComBroker;
@@ -29,7 +24,7 @@ public class Server implements ServicioPuntitosEstan {
 	}
 
 	@Override
-	public void puntitosEstan(long numeros, int semilla) {
+	public void generarPuntos(long numeros, int semilla) {
 
 		try{
 				Random r = new Random(semilla);
@@ -46,7 +41,7 @@ public class Server implements ServicioPuntitosEstan {
 					nPuntosDentroDelCirculo++;
 				}
 			}
-			servicioComBroker.enviarPuntosCliente(nPuntosDentroDelCirculo);
+			servicioComBroker.enviarPuntosACliente(nPuntosDentroDelCirculo);
 		}catch(Exception e){
 			servicioComBroker.detachServer(this);
 		}

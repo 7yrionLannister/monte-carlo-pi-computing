@@ -7,7 +7,7 @@ import org.osoa.sca.annotations.Service;
 @Service
 public interface ServicioComBroker {
     void attachServer(Server server);
-    void enviarPuntosCliente(long puntosRetorno);
+    void enviarPuntosACliente(long puntosRetorno);
     void detachServer(Server server);
     
 }

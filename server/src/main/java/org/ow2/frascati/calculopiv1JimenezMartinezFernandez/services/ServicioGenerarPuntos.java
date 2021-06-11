@@ -4,6 +4,6 @@ import org.osoa.sca.annotations.Service;
 
 
 @Service
-public interface ServicioPuntitosEstan {
-    void puntitosEstan(long puntos, int semilla);
+public interface ServicioGenerarPuntos {
+    void generarPuntos(long puntos, int semilla);
 }

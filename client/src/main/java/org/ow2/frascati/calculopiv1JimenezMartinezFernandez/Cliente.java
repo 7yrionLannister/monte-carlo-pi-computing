@@ -22,10 +22,8 @@ public class Cliente implements Runnable, ServicioCalcularPI {
 	private InterfazGrafica interfazGrafica;
 
 	@Override
-	public double recibirPuntos(long puntosACalcular, int semilla) {
-		long p = puntitosEstan(puntosACalcular, semilla);
-
-		double pi = (4 * ((double) p) / (puntosACalcular));
+	public double recibirPuntos(long puntosTotales, long puntosCirculo, int semilla) {
+		double pi = (4 * ((double) puntosCirculo) / (puntosTotales));
 
 		return pi;
 	}
