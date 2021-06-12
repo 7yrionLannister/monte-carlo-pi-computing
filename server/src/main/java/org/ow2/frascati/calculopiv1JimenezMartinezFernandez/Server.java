@@ -14,11 +14,11 @@ public class Server implements ServicioGenerarPuntos, Runnable {
 	@Property
 	private String myServiceUri;
 
-	@Reference
+	@Reference(name = "servicioComBroker")
 	private ServicioComBroker servicioComBroker;
 
 	public Server(){
-		
+		System.out.println(myServiceUri);
 	}
 
 	public void generarPuntos(long numeros, int semilla) {
@@ -47,6 +47,8 @@ public class Server implements ServicioGenerarPuntos, Runnable {
 
 	public void run() {
 		System.out.println("Me lleva la que me trajo");
+		System.out.println(myServiceUri);
+
 		servicioComBroker.attachServicioGenerarPuntos(myServiceUri);
 	}
 }
