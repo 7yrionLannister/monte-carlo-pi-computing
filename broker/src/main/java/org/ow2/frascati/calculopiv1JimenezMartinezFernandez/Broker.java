@@ -1,43 +1,65 @@
 package org.ow2.frascati.calculopiv1JimenezMartinezFernandez;
 
-import org.osoa.sca.annotations.Reference;
-import org.osoa.sca.annotations.Scope;
-import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioGenerarPuntos;
-import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioCalcularPI;
+import java.rmi.Naming;
+import java.util.LinkedList;
+
+import org.osoa.sca.annotations.Property;
 import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioComBroker;
 
 
-@Scope("COMPOSITE")
-public class Broker implements ServicioComBroker {
-	@Reference
-	private ServicioCalcularPI servicioCalcularPI;
+public class Broker implements ServicioComBroker, Runnable {
+	@Property
+	private int blockSize;
 
+	private static LinkedList<String> serverUris = new LinkedList<String>();
+	private static LinkedList<String> clientUris = new LinkedList<String>();
+
+	private long puntosRetorno;
+
+	LinkedList<Server> servers = new LinkedList<Server>();
+	
 	public Broker() {
 		
 	}
 
-	public void aumentarNodosDeProcesamiento(int nodos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public long pedirPuntos(int seed, long numPuntos, int numNodosIniciales) {
-		// TODO Auto-generated method stub
+	public synchronized long pedirPuntos(String uriCliente, int seed, long numPuntos) {
+		/*
+		try {
+            Client sever =(Server)Naming.lookup(uriCliente);
+            System.out.println("client :" + uriCliente);
+            servers.add(sever);
+            serverUris.add(uriCliente);
+        } catch (Exception e) {
+            System.out.println("error al hacer binding: " + uriCliente);
+            e.printStackTrace();
+        }*/
 		return 0;
 	}
 
-	public void attachServicioGenerarPuntos(ServicioGenerarPuntos ServicioGenerarPuntos) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void attachServicioGenerarPuntos(String serverUri) {
+		try {
+            Server sever =(Server)Naming.lookup(serverUri);
+            System.out.println("server :" + serverUri);
+            servers.add(sever);
+            serverUris.add(serverUri);
+        } catch (Exception e) {
+            System.out.println("error al hacer binding: " + serverUri);
+            e.printStackTrace();
+        }
 	}
 
-	public void enviarPuntosACliente(long puntosRetorno) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void enviarPuntosACliente(long puntosRetorno) {
+		this.puntosRetorno += puntosRetorno;
 	}
 
-	public void detachServicioGenerarPuntos(ServicioGenerarPuntos ServicioGenerarPuntos) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void detachServicioGenerarPuntos(String serverUri) {
+		int index = serverUris.indexOf(serverUri);
+		String uriRemoved=serverUris.remove(index);
+		servers.remove(index);
+		assert(serverUri.equals(uriRemoved));			
+	}
+
+	public void run() {
+		System.out.println("DASDSADSADSADAWD");
 	}
 }

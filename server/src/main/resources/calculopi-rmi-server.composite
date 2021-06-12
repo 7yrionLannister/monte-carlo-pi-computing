@@ -7,7 +7,7 @@
   name="ServerRMI">
 
   <component name="server">
-
+    <property name="myServiceuri">rmi://localhost:1090/generarPuntos</property>
     <service name="generarPuntos" promote="server/generarPuntos">
       <interface.java interface="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioGenerarPuntos"></interface.java>
       <frascati:binding.rmi host="localhost" serviceName="rmiService12" port="1090" />
@@ -15,7 +15,7 @@
 
     <reference name="servicioComBroker" promote="server/servicioComBroker">
       <frascati:binding.rmi host="localhost"
-        serviceName="rmiService08" port="1098"/>
+        serviceName="rmiService33" port="1098"/>
     </reference>
 
     <implementation.java class="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.Server" />

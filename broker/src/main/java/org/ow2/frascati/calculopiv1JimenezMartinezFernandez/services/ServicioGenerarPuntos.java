@@ -1,9 +1,12 @@
 package org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 import org.osoa.sca.annotations.Service;
 
 
 @Service
-public interface ServicioGenerarPuntos {
-    void generarPuntos(long puntos, int semilla);
+public interface ServicioGenerarPuntos <T extends Comparable<? super T>> extends Remote {
+    void generarPuntos(long puntos, int semilla) throws RemoteException;
 }

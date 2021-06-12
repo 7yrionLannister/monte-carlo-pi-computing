@@ -2,17 +2,14 @@ package org.ow2.frascati.calculopiv1JimenezMartinezFernandez;
 
 import java.util.Random;
 
-import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
-import org.osoa.sca.annotations.Service;
+import org.osoa.sca.annotations.Scope;
 import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioGenerarPuntos;
 import org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioComBroker;
 
-@Service(Runnable.class)
-public class Server implements ServicioGenerarPuntos, Runnable {
 
-	@Property
-	private String myServiceUri;
+@Scope("COMPOSITE")
+public class Server <T extends Comparable<? super T>> implements ServicioGenerarPuntos <T> , Runnable {
 
 	@Reference
 	private ServicioComBroker servicioComBroker;
@@ -20,12 +17,13 @@ public class Server implements ServicioGenerarPuntos, Runnable {
 	public Server(){
 		try {
 			System.out.println("Corriendo el servidor");
-			servicioComBroker.attachServicioGenerarPuntos(myServiceUri);			
+			servicioComBroker.attachServicioGenerarPuntos("xxxxxxxxx");			
 		} catch (Exception e) {
-			servicioComBroker.detachServicioGenerarPuntos(myServiceUri);
+			servicioComBroker.detachServicioGenerarPuntos("xxxxxxxxx");
 		}
 	}
 
+	@Override
 	public void generarPuntos(long numeros, int semilla) {
 
 		try{
@@ -45,13 +43,13 @@ public class Server implements ServicioGenerarPuntos, Runnable {
 			}
 			servicioComBroker.enviarPuntosACliente(nPuntosDentroDelCirculo);
 		}catch(Exception e){
-			servicioComBroker.detachServicioGenerarPuntos(myServiceUri);
+			servicioComBroker.detachServicioGenerarPuntos("asdsad");
 		}
 		
 	}
 
 	public void run() {
-		System.out.println("Me lleva la que me trajo");
-		servicioComBroker.attachServicioGenerarPuntos(myServiceUri);
+		// TODO Auto-generated method stub
+		
 	}
 }

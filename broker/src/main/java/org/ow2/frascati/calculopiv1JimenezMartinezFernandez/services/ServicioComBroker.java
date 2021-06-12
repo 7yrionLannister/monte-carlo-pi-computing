@@ -5,9 +5,8 @@ import org.osoa.sca.annotations.Service;
 
 @Service
 public interface ServicioComBroker {
-    void aumentarNodosDeProcesamiento(int nodos);
-    long pedirPuntos(int seed, long numPuntos, int numNodosIniciales);
-    void attachServicioGenerarPuntos(ServicioGenerarPuntos ServicioGenerarPuntos);
+    long pedirPuntos(String uriCliente, int seed, long numPuntos);
+    void attachServicioGenerarPuntos(String serverUri);
     void enviarPuntosACliente(long puntosRetorno);
-    void detachServicioGenerarPuntos(ServicioGenerarPuntos ServicioGenerarPuntos);
+    void detachServicioGenerarPuntos(String serverUri);
 }

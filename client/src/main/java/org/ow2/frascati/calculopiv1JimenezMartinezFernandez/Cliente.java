@@ -21,7 +21,6 @@ public class Cliente implements Runnable, ServicioCalcularPI {
 
 	private InterfazGrafica interfazGrafica;
 
-	@Override
 	public double recibirPuntos(long puntosTotales, long puntosCirculo, int semilla) {
 		double pi = (4 * ((double) puntosCirculo) / (puntosTotales));
 
@@ -31,7 +30,6 @@ public class Cliente implements Runnable, ServicioCalcularPI {
 	// --------------------------------------------------------------------------
 	// Implementation of the Runnable interface
 	// --------------------------------------------------------------------------
-	@Override
 	public final void run() {
 		// configurar la interfaz grafica
 		try {
@@ -68,5 +66,9 @@ public class Cliente implements Runnable, ServicioCalcularPI {
 				
 			}
 		);
+	}
+
+	public void updateNodosProcesamiento(int nnodos) {
+		System.out.println("Ya no mas");
 	}
 }
