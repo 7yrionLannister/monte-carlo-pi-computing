@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+  xmlns:frascati="http://frascati.ow2.org/xmlns/sca/1.1"
+  targetNamespace="http://frascati.ow2.org/helloworld-rmi"
+  name="serverRMI">
+
+  <service name="r" promote="server/r">
+    <interface.java interface="java.lang.Runnable" />
+  </service>
+
+  <component name="server">
+    <property name="uri">rmi://localhost:1235/server</property>
+
+    <service name="server">
+      <interface.java interface="org.ow2.frascati.examples.helloworld.annotated.Server" />
+      <frascati:binding.rmi host="localhost" serviceName="server" port="1235"/>
+  	</service>
+
+    <service name="r">
+      <interface.java interface="java.lang.Runnable" />
+    </service>
+
+    <reference name="client">
+      <frascati:binding.rmi host="localhost" serviceName="rmiservice" port="1234"/>
+    </reference>
+
+    <implementation.java class="org.ow2.frascati.examples.helloworld.annotated.ServerImpl" />
+
+  </component>
+
+</composite>
