@@ -6,8 +6,17 @@
 
   name="ServerRMI">
 
+  <service name="r" promote="server/r">
+    <interface.java interface="java.lang.Runnable" />
+  </service>
+
   <component name="server">
     <property name="myServiceuri">rmi://localhost:1090/generarPuntos</property>
+
+    <service name="r">
+      <interface.java interface="java.lang.Runnable" />
+    </service>
+    
     <service name="generarPuntos" promote="server/generarPuntos">
       <interface.java interface="org.ow2.frascati.calculopiv1JimenezMartinezFernandez.services.ServicioGenerarPuntos"></interface.java>
       <frascati:binding.rmi host="localhost" serviceName="rmiService12" port="1090" />

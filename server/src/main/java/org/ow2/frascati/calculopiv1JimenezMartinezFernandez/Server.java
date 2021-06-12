@@ -18,12 +18,7 @@ public class Server implements ServicioGenerarPuntos, Runnable {
 	private ServicioComBroker servicioComBroker;
 
 	public Server(){
-		try {
-			System.out.println("Corriendo el servidor");
-			servicioComBroker.attachServicioGenerarPuntos(myServiceUri);			
-		} catch (Exception e) {
-			servicioComBroker.detachServicioGenerarPuntos(myServiceUri);
-		}
+		
 	}
 
 	public void generarPuntos(long numeros, int semilla) {
