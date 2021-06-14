@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import org.osoa.sca.annotations.Property;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.Random;
+
 
 public class ClientImpl
   implements Client, Runnable
@@ -81,8 +83,6 @@ public class ClientImpl
 					final int seed = Integer.parseInt(gui.getTextFieldSemilla().getText().trim());
 					long numPuntos = Long.parseLong(gui.getTextFieldNumPuntos().getText().trim());
 					if(seed > 0&& numPuntos > 0) {
-						// TODO llamar al metodo que entrega los puntos y cuando los entregue mandar ese arreglo al metodo que calcula pi aqui (debe ser modificado para recibir los puntos)
-						// Y mostrar el resultado
 						System.out.println("----------------------------");
 						System.out.println("seed es " + seed);
 						System.out.println("npuntos es " + numPuntos);
@@ -90,14 +90,16 @@ public class ClientImpl
 
                         System.out.println("SERVERS A IMPRIMIR: " + servers.size());
                         dotsGenerated = 0;
-                        final long eachDots = numPuntos / servers.size();
+                        final long eachDots = (long)Math.ceil(numPuntos * 1.0 / servers.size());
                         ArrayList<Thread> threads = new ArrayList<Thread>();
                         ExecutorService executor = Executors.newFixedThreadPool(servers.size());
+                        long startMillis = System.currentTimeMillis();
+                        final Random r = new Random(seed);
                         for(final Server s : servers) {
                             Thread t = new Thread() {
                                 public void run() {
                                     try {
-                                        dotsGenerated += s.generateDots(seed, eachDots);
+                                        dotsGenerated += s.generateDots(r.nextInt(1000), eachDots);
                                     } catch (RemoteException re) {
                                         System.out.println("Se produjo una excepcion remota");
                                     }
@@ -108,7 +110,10 @@ public class ClientImpl
                         }
                         
                         executor.shutdown();
-		                while (!executor.isTerminated());
+		                while (!executor.isTerminated()); // espera el resultado
+                        long endMillis = System.currentTimeMillis();
+                        long duration = (endMillis - startMillis);
+                        System.out.println("Se tardo " + duration + " milisegundos");
 
                         System.out.println("..... " + dotsGenerated + " ........");
                         double pi = computePi(numPuntos, dotsGenerated);

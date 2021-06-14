@@ -65,14 +65,16 @@ public class ServerImpl implements Runnable, Server {
       numThreads = 1;
     }
     final long dotsPerThread = numPuntos / numThreads;
-    final Random r = new Random(seed);
+    System.out.println("Numero de hilos = " + numThreads + ", puntos por hilo = " + dotsPerThread);
     nPuntosDentroDelCirculo = 0;
-
+    final int seedFinal = seed;
+    final Random r = new Random(seed);
     ExecutorService executor = Executors.newFixedThreadPool((int)numThreads);
     for(int i = 0; i < numThreads; i++) {
         Thread t = new Thread() {
             public void run() {
                 try {
+                  System.out.println("* Hilo comienza");
                   for (int i = 0; i < dotsPerThread; i++) {
                     double x = r.nextDouble();
                     double y = r.nextDouble();
@@ -81,6 +83,7 @@ public class ServerImpl implements Runnable, Server {
                       nPuntosDentroDelCirculo++;
                     }
                   }
+                  System.out.println("* Hilo termina");
                 } catch (Exception e) {
                     System.out.println("F");
                 }
