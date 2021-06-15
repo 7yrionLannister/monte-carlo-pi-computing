@@ -12,12 +12,16 @@ import java.util.concurrent.Executors;
 import org.osoa.sca.annotations.Property;
 import org.osoa.sca.annotations.Reference;
 import org.osoa.sca.annotations.Service;
+import java.util.concurrent.Semaphore;
 
 
 @Service(Runnable.class)
 public class ServerImpl implements Runnable, Server {
   private static long nPuntosDentroDelCirculo = 0;
   private static final long SIZE = 100000000;
+  private static final int THREADS = 4;
+  private static final Semaphore semaphore = new Semaphore(1);
+
   @Property
   private String uri;
 
@@ -58,42 +62,50 @@ public class ServerImpl implements Runnable, Server {
     System.out.println("Client method was called from the server");
   }
 
-	public long generateDots(int seed, long numPuntos) {
+  static long count = 0;
+	public long generateDots(int seed, long numPuntos) throws Exception {
     System.out.println("generateDots");
-    long numThreads = numPuntos / SIZE;
-    if(numThreads == 0) {
-      numThreads = 1;
-    }
-    final long dotsPerThread = numPuntos / numThreads;
-    System.out.println("Numero de hilos = " + numThreads + ", puntos por hilo = " + dotsPerThread);
+    long dotsPerThread = Math.min(SIZE, (int) Math.ceil(numPuntos * 1.0 / THREADS));
     nPuntosDentroDelCirculo = 0;
     final int seedFinal = seed;
     final Random r = new Random(seed);
-    ExecutorService executor = Executors.newFixedThreadPool((int)numThreads);
-    for(int i = 0; i < numThreads; i++) {
-        Thread t = new Thread() {
-            public void run() {
-                try {
-                  System.out.println("* Hilo comienza");
-                  for (int i = 0; i < dotsPerThread; i++) {
-                    double x = r.nextDouble();
-                    double y = r.nextDouble();
-          
-                    if ((x * x) + (y * y) <= 1) {
-                      nPuntosDentroDelCirculo++;
+    int numThreads = (int)Math.ceil(numPuntos * 1.0 / SIZE);
+    count = 0;
+    for(int j = 0; j < numThreads; j += THREADS) {
+      ExecutorService executor = Executors.newFixedThreadPool(THREADS);
+      if(j == numThreads - 1) {
+        dotsPerThread = Math.min(dotsPerThread, SIZE);
+      }
+      final long dots = dotsPerThread;
+      for(int i = 0; i < THREADS; i++) {
+          Thread t = new Thread() {
+              public void run() {
+                  try {
+                    for (int i = 0; i < dots; i++) {
+                      semaphore.acquire();
+                      count++;
+                      double x = r.nextDouble();
+                      double y = r.nextDouble();
+            
+                      if ((x * x) + (y * y) <= 1) {
+                        nPuntosDentroDelCirculo++;
+                      }
+                      semaphore.release();
                     }
+                  } catch (Exception e) {
+                      System.out.println("F");
                   }
-                  System.out.println("* Hilo termina");
-                } catch (Exception e) {
-                    System.out.println("F");
-                }
-            }
-        };
-        executor.execute(t);
+              }
+          };
+          executor.execute(t);
+      }
+      executor.shutdown();
+      while (!executor.isTerminated());
     }
+    System.out.println("* Cuenta = " + count + ", esperado = " + numPuntos);
     
-    executor.shutdown();
-    while (!executor.isTerminated());
+    //executor.shutdown();
+    //while (!executor.isTerminated());
     return nPuntosDentroDelCirculo;
 	}
 }

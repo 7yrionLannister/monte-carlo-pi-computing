@@ -5,5 +5,5 @@ import org.osoa.sca.annotations.Service;
 
 @Service
 public interface Server {
-    long generateDots(int seed, long numPuntos);
+    long generateDots(int seed, long numPuntos) throws Exception ;
 }
